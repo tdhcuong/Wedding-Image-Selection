@@ -209,7 +209,7 @@ This project is provided as-is for personal and commercial use.
 
 ## Author
 
-Created for wedding photography selection and image curation workflows.
+Cuong Tran
 
 ---
 
