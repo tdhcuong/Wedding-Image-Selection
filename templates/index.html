@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Selection App</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <h1>Wedding Image Selection</h1>
+        <div class="top-bar-center" onclick="browseFolder()" title="Click to change folder">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span id="current-folder">No folder selected</span>
+        </div>
+        <div class="top-bar-actions">
+            <span id="fav-count" class="fav-counter">0 selected</span>
+            <button id="btn-review" class="btn btn-review" onclick="openReview()">Review Favorites</button>
+            <button class="btn btn-import" onclick="document.getElementById('import-file').click()">Import TXT</button>
+            <button id="btn-export" class="btn btn-export" onclick="exportFavorites()">Export to TXT</button>
+            <button class="btn btn-clear-cache" onclick="clearCache()" title="Clear thumbnail cache">Clear Cache</button>
+            <input type="file" id="import-file" accept=".txt" style="display:none" onchange="importFavorites(this)">
+        </div>
+    </header>
+
+    <!-- Folder Picker -->
+    <div id="folder-picker" class="folder-picker">
+        <div class="folder-picker-content" onclick="browseFolder()" style="cursor:pointer;">
+            <svg viewBox="0 0 24 24" width="80" height="80" style="fill:#0f3460;margin-bottom:16px;"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <h2>Click to Select Image Folder</h2>
+            <p>A folder browser dialog will open</p>
+        </div>
+    </div>
+
+    <!-- Grid Panel -->
+    <main id="grid" class="image-grid"></main>
+
+    <!-- Loading -->
+    <div id="loading" class="loading">Loading images...</div>
+
+    <!-- Popup Viewer -->
+    <div id="popup" class="popup-overlay" style="display:none;" onclick="onOverlayClick(event)">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()" title="Close">&times;</button>
+            <button class="popup-nav popup-prev" onclick="navigatePopup(-1)" title="Previous">&#10094;</button>
+            <div class="popup-img-wrapper">
+                <img id="popup-img" src="" alt="Preview">
+            </div>
+            <button class="popup-nav popup-next" onclick="navigatePopup(1)" title="Next">&#10095;</button>
+            <div class="popup-bottom-bar">
+                <span id="popup-filename" class="popup-filename"></span>
+                <button id="popup-fav-btn" class="fav-btn popup-fav" onclick="toggleFavPopup()" title="Toggle Favorite">
+                    <svg viewBox="0 0 24 24" width="32" height="32"><path id="popup-heart" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </button>
+            </div>
+            <span id="popup-counter" class="popup-counter"></span>
+        </div>
+    </div>
+
+    <!-- Review Panel -->
+    <div id="review-overlay" class="popup-overlay" style="display:none;" onclick="onReviewOverlayClick(event)">
+        <div class="review-panel">
+            <div class="review-header">
+                <h2>Review Favorites (<span id="review-count">0</span>)</h2>
+                <button class="popup-close" onclick="closeReview()">&times;</button>
+            </div>
+            <div id="review-grid" class="image-grid review-grid"></div>
+            <div id="review-empty" class="review-empty" style="display:none;">No favorites selected yet.</div>
+            <div class="review-footer">
+                <button class="btn btn-delete-all" onclick="deleteAllFavorites()">Delete All</button>
+                <button class="btn btn-export" onclick="exportFavorites()">Export to TXT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" style="display:none;"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
